@@ -7,7 +7,8 @@ import {
   obtenerTerminadas,
   cambiarEstado,
   eliminarTarea,
-  obtenerResumen
+  obtenerResumen,
+  buscarPorTitulo
 } from "../src/taskService.js";
 
 /*
@@ -318,4 +319,45 @@ describe("obtenerResumen", () => {
     expect(tareas).toEqual(copia);
   });
 
+});
+
+describe("buscarPorTitulo", () => {
+  const tareas = [
+    { id: 1, titulo: "Estudiar JavaScript", completada: false },
+    { id: 2, titulo: "Comprar materiales", completada: true },
+    { id: 3, titulo: "Estudiar para el examen", completada: false }
+  ];
+
+  it("encuentra tareas que contienen el texto buscado", () => {
+    const resultado = buscarPorTitulo(tareas, "Estudiar");
+
+    expect(resultado).toHaveLength(2);
+    expect(resultado.map(t => t.id)).toEqual([1, 3]);
+  });
+
+  it("ignora mayúsculas y minúsculas", () => {
+    const resultado = buscarPorTitulo(tareas, "javascript");
+
+    expect(resultado).toHaveLength(1);
+    expect(resultado[0].id).toBe(1);
+  });
+
+  it("devuelve un arreglo vacío cuando no encuentra coincidencias", () => {
+    expect(buscarPorTitulo(tareas, "Python")).toEqual([]);
+  });
+
+  it("no modifica el arreglo original", () => {
+    const copia = structuredClone(tareas);
+
+    buscarPorTitulo(tareas, "Estudiar");
+
+    expect(tareas).toEqual(copia);
+  });
+  it("ignora espacios al inicio y al final de la búsqueda", () => {
+  const tareas = [
+    { id: 1, titulo: "Estudiar JavaScript", completada: false }
+  ];
+
+  expect(buscarPorTitulo(tareas, "  javascript  ")).toHaveLength(1);
+});
 });

@@ -105,3 +105,42 @@ uno nuevo se agregue.
 3. **REFACTOR:** No se requirió. Las dos funciones son de una línea y casi espejo, pero extraer una función auxiliar agregaría complejidad sin ganar claridad.
 **Decisión de diseño:** se usó filter() porque la intención es seleccionar un subconjunto sin transformar los elementos ni modificar la colección original. map() no aplica porque no hay transformación, y find() devolvería un solo elemento.
 **Contrato:** ambas devuelven un array nuevo. Cuando no hay coincidencias o la colección está vacía devuelven [] (no undefined, a diferencia de find()).
+
+
+
+## Misión 10: Refactorización final
+
+### Objetivo
+Revisar y mejorar la organización interna de la aplicación,
+conservando las funcionalidades desarrolladas anteriormente.
+
+### Revisión realizada
+
+- Se verificó la separación entre la lógica de dominio y la interfaz.
+- Se revisó el uso de operaciones inmutables sobre las tareas.
+- Se comprobó la reutilización de funciones existentes.
+- Se revisó la legibilidad y organización del código.
+- Se configuró Git para excluir archivos generados automáticamente.
+- Se ejecutaron las pruebas unitarias para verificar el comportamiento.
+
+### Decisiones de diseño
+
+Se mantuvo la lógica de negocio dentro de `taskService.js`,
+mientras que `app.js` quedó encargado de los eventos y la
+actualización del DOM.
+
+La separación de responsabilidades facilita el mantenimiento,
+la reutilización del código y la ejecución de pruebas unitarias.
+
+### Verificación
+
+Comandos utilizados:
+
+```bash
+npm test
+node --check src/taskService.js
+node --check src/app.js
+```
+
+El refactor se considera correcto cuando todas las pruebas
+continúan pasando y la interfaz conserva sus funcionalidades.

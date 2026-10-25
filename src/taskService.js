@@ -52,3 +52,11 @@ export function obtenerResumen(tareas) {
     terminadas: obtenerTerminadas(tareas).length
   };
 }
+
+export function buscarPorTitulo(tareas, texto) {
+  const busqueda = texto.trim().toLowerCase();
+
+  return tareas.filter(tarea =>
+    tarea.titulo.toLowerCase().includes(busqueda)
+  );
+}
