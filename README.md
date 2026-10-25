@@ -103,7 +103,5 @@ uno nuevo se agregue.
 1. **RED:** Implementamos los describe("obtenerPendientes") y describe("obtenerTerminadas"), cada uno con tres casos: colección mixta, ninguna coincidencia y colección vacía. Las 6 pruebas nuevas fallaron porque ambas funciones solo lanzaban el error de "Misión 5 pendiente", sin ninguna lógica de filtrado.
 2. **GREEN:** Implementamos las dos funciones con filter(): obtenerPendientes retorna tareas.filter(t => !t.completada) y obtenerTerminadas retorna tareas.filter(t => t.completada). Las 10 pruebas pasaron.
 3. **REFACTOR:** No se requirió. Las dos funciones son de una línea y casi espejo, pero extraer una función auxiliar agregaría complejidad sin ganar claridad.
-
 **Decisión de diseño:** se usó filter() porque la intención es seleccionar un subconjunto sin transformar los elementos ni modificar la colección original. map() no aplica porque no hay transformación, y find() devolvería un solo elemento.
-
 **Contrato:** ambas devuelven un array nuevo. Cuando no hay coincidencias o la colección está vacía devuelven [] (no undefined, a diferencia de find()).
