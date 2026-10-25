@@ -17,6 +17,7 @@ import {
  * una vez. Para cada comportamiento sigue RED → GREEN → REFACTOR.
  */
 
+//MISION 02
 describe("crearTarea", () => {
   it("crea una tarea pendiente con id y título", () => {
     // Arrange
@@ -31,6 +32,7 @@ describe("crearTarea", () => {
   });
 });
 
+// MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 describe("agregarTarea", () => {
   it("incluye la tarea nueva en la colección resultante", () => {
     // Arrange
@@ -45,7 +47,35 @@ describe("agregarTarea", () => {
   });
 });
 
-// MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
+// MISIÓN 4: prueba id existente e inexistente para buscarTarea().
+describe("buscarTarea", () => {
+  it("encuentra una tarea con un id existente", () => {
+    // Arrange
+    const tareas = [
+      crearTarea(1, "Revisar requisitos"),
+      crearTarea(2, "Diseñar pruebas")
+    ];
+
+    // Act
+    const resultado = buscarTarea(tareas, 2);
+
+    // Assert
+    expect(resultado).toEqual({ id: 2, titulo: "Diseñar pruebas", completada: false });
+  });
+
+  it("devuelve undefined cuando el id no existe", () => {
+    // Arrange
+    const tareas = [crearTarea(1, "Revisar requisitos")];
+
+    // Act
+    const resultado = buscarTarea(tareas, 99);
+
+    // Assert
+    expect(resultado).toBeUndefined();
+  });
+});
+
+
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
 // MISIÓN 6: prueba cambio correcto, otra tarea intacta e id inexistente.
@@ -53,8 +83,6 @@ describe("agregarTarea", () => {
 // MISIÓN 8: prueba obtenerResumen(), incluyendo colección vacía.
 
 // Los imports anteriores quedan preparados para que construyas la suite de forma incremental.
-void agregarTarea;
-void buscarTarea;
 void obtenerPendientes;
 void obtenerTerminadas;
 void cambiarEstado;

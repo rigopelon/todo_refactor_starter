@@ -19,8 +19,8 @@ export function agregarTarea(tareas, nuevaTarea) {
 
 // MISIÓN 4
 export function buscarTarea(tareas, id) {
-  // TODO: usar find(). Un id inexistente debe producir undefined.
-  throw new Error("Misión 4 pendiente: implementar buscarTarea()");
+  const tarea = tareas.find(t => t.id === id);
+  return tarea;
 }
 
 // MISIÓN 5

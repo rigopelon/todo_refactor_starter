@@ -84,6 +84,13 @@ uno nuevo se agregue.
 **NAVIGATOR: HUGO**
 
 1. **REFACTOR:** Antes de continuar con misión 3, agregamos un describe para que el npm testpueda verificar lo siguiente que haremos.
-2. **RED** se corrio el programa,y regreso fallo debido a que la funcion 'agregarTarea' esta configurada a regresar error al correr, señalando que falta de codigo en ella.
-3. **RED** se implemento un push hacia el arreglo de tares con nuevaTarea, y a pesar de si haber agregado el objeto dentro del arreglo, tambien modifico el arreglo original, lo cual no es lo que se busca, y es un fallo.
-4. **GREEN** se reemplazo el push hecho a tareas, y en vez retornamos un nuevo arreglo, con el contenido original de tareas, y el nuevo objeto nuevaTarea dentro de ella, evitando modificar el original y aun asi agregar nuevaTarea en el arreglo = return [...tareas, nuevaTarea]. Esto salio con exito.
+2. **RED:** se corrio el programa,y regreso fallo debido a que la funcion 'agregarTarea' esta configurada a regresar error al correr, señalando que falta de codigo en ella.
+3. **RED:** se implemento un push hacia el arreglo de tares con nuevaTarea, y a pesar de si haber agregado el objeto dentro del arreglo, tambien modifico el arreglo original, lo cual no es lo que se busca, y es un fallo.
+4. **GREEN:** se reemplazo el push hecho a tareas, y en vez retornamos un nuevo arreglo, con el contenido original de tareas, y el nuevo objeto nuevaTarea dentro de ella, evitando modificar el original y aun asi agregar nuevaTarea en el arreglo = return [...tareas, nuevaTarea]. Esto salio con exito.
+
+## Mision 4 . Cambiar el modelo: de string a objeto
+**DRIVER: RIGO**
+**NAVIGATOR: HUGO**
+
+1. **RED:** Implementamos el describe("buscarTarea") para llevar a cabo la funcion buscarTarea(tareas, id) de taskService.js, lo cual falla debido a que esta programado a hacerlo.
+2. **GREEN:** Utilizamos la constante mostrada en la documentacion pdf del caso de estudio, hacemos que la función retorne dicha tarea. Resulto ser un exito.
