@@ -207,3 +207,40 @@ describe("cambiarEstado", () => {
     expect(resultado[1].completada).toBe(false);
   });
 });
+
+describe("eliminarTarea", () => {
+  const tareas = [
+    { id: 1, titulo: "Estudiar", completada: false },
+    { id: 2, titulo: "Programar", completada: true },
+    { id: 3, titulo: "Hacer reporte", completada: false }
+  ];
+
+  it("elimina una tarea existente por su id", () => {
+    const resultado = eliminarTarea(tareas, 2);
+
+    expect(resultado).toHaveLength(2);
+    expect(resultado.find(t => t.id === 2)).toBeUndefined();
+    expect(resultado.map(t => t.id)).toEqual([1, 3]);
+  });
+
+  it("conserva las tareas cuando el id no existe", () => {
+    const resultado = eliminarTarea(tareas, 99);
+
+    expect(resultado).toEqual(tareas);
+    expect(resultado).not.toBe(tareas);
+  });
+
+  it("devuelve un arreglo vacío cuando no hay tareas", () => {
+    const resultado = eliminarTarea([], 1);
+
+    expect(resultado).toEqual([]);
+  });
+
+  it("no modifica el arreglo original", () => {
+    const resultado = eliminarTarea(tareas, 1);
+
+    expect(tareas).toHaveLength(3);
+    expect(tareas[0].id).toBe(1);
+    expect(resultado).not.toBe(tareas);
+  });
+});
