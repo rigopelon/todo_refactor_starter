@@ -19,19 +19,16 @@ export function agregarTarea(tareas, nuevaTarea) {
 
 // MISIÓN 4
 export function buscarTarea(tareas, id) {
-  const tarea = tareas.find(t => t.id === id);
-  return tarea;
+  return tareas.find(t => t.id === id);;
 }
 
 // MISIÓN 5
 export function obtenerPendientes(tareas) {
-  // TODO: usar filter().
-  throw new Error("Misión 5 pendiente: implementar obtenerPendientes()");
+  return tareas.filter(t => !t.completada);
 }
 
 export function obtenerTerminadas(tareas) {
-  // TODO: usar filter().
-  throw new Error("Misión 5 pendiente: implementar obtenerTerminadas()");
+  return tareas.filter(t => t.completada);
 }
 
 // MISIÓN 6
