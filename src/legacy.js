@@ -1,4 +1,5 @@
 /*
+
  * MISIÓN 0 · CÓDIGO LEGACY PARA ANALIZAR
  *
  * Este ejemplo funciona, pero representa las tareas como strings y mezcla

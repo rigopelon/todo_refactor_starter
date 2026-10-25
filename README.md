@@ -29,15 +29,19 @@ La primera prueba está preparada para fallar: es el punto de partida de la **Mi
 Responde aquí:
 
 1. ¿Dónde almacenarías ahora el estado `completada` de una tarea?
+    Iria dentro de cada tarea, como propiedad de un objeto, que confirma si una tarea fue completada o pendiente.
 2. ¿Qué ocurriría si mañana cada tarea necesita prioridad, fecha o responsable?
+    Se necesitaria varias propiedades registradas en los objetos de Tarea para mostralos sin verse acumulados en una sola linea de texto.
 3. ¿Qué parte del código representa datos y qué parte representa interfaz?
+    Los datos en el arreglo "tareas". El queSelector, innerHTML, y el bucle que imprime.
 4. ¿Qué comportamiento debemos conservar durante el refactor?
+    
 
 ### Tres comportamientos observables que NO deben cambiar
 
-1. 
-2. 
-3. 
+1. Las tareas se muestran en el orden en que estan.
+2. Un título vacío o solo con espacios no se agrega y muestra “Escribe un título antes de agregar.”
+3. Eliminar quita solo la tarea elegida y deja las demás.
 
 ## Registro RED → GREEN → REFACTOR
 
