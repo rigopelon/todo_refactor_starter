@@ -173,3 +173,37 @@ describe("obtenerTerminadas", () => {
 void cambiarEstado;
 void eliminarTarea;
 void obtenerResumen;
+
+describe("cambiarEstado", () => {
+  const tareas = [
+    { id: 1, titulo: "Estudiar", completada: false },
+    { id: 2, titulo: "Programar", completada: true }
+  ];
+
+  it("cambia correctamente el estado de una tarea", () => {
+    const resultado = cambiarEstado(tareas, 1);
+
+    expect(resultado[0].completada).toBe(true);
+  });
+
+  it("mantiene intactas las demás tareas y no modifica el original", () => {
+    const resultado = cambiarEstado(tareas, 1);
+
+    expect(resultado[1]).toEqual(tareas[1]);
+    expect(tareas[0].completada).toBe(false);
+    expect(resultado).not.toBe(tareas);
+    expect(resultado[0]).not.toBe(tareas[0]);
+  });
+
+  it("conserva las tareas cuando el id no existe", () => {
+    const resultado = cambiarEstado(tareas, 99);
+
+    expect(resultado).toEqual(tareas);
+  });
+
+  it("permite cambiar una tarea terminada a pendiente", () => {
+    const resultado = cambiarEstado(tareas, 2);
+
+    expect(resultado[1].completada).toBe(false);
+  });
+});
