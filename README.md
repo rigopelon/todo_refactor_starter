@@ -107,34 +107,249 @@ uno nuevo se agregue.
 **Contrato:** ambas devuelven un array nuevo. Cuando no hay coincidencias o la colección está vacía devuelven [] (no undefined, a diferencia de find()).
 
 
+## Misión 6. Cambiar el estado de una tarea
 
-## Misión 10: Refactorización final
+**Responsable de implementación: HUGO**
 
 ### Objetivo
-Revisar y mejorar la organización interna de la aplicación,
-conservando las funcionalidades desarrolladas anteriormente.
 
-### Revisión realizada
+Implementar la función `cambiarEstado(tareas, id)` para modificar el estado de una tarea de pendiente a terminada o viceversa, sin modificar el arreglo original.
 
-- Se verificó la separación entre la lógica de dominio y la interfaz.
-- Se revisó el uso de operaciones inmutables sobre las tareas.
-- Se comprobó la reutilización de funciones existentes.
-- Se revisó la legibilidad y organización del código.
-- Se configuró Git para excluir archivos generados automáticamente.
-- Se ejecutaron las pruebas unitarias para verificar el comportamiento.
+### RED
 
-### Decisiones de diseño
+Se implementaron cuatro pruebas unitarias para verificar:
 
-Se mantuvo la lógica de negocio dentro de `taskService.js`,
-mientras que `app.js` quedó encargado de los eventos y la
-actualización del DOM.
+1. El cambio correcto del estado de una tarea.
+2. La conservación de las demás tareas y del arreglo original.
+3. El comportamiento cuando el identificador no existe.
+4. La posibilidad de cambiar una tarea terminada nuevamente a pendiente.
 
-La separación de responsabilidades facilita el mantenimiento,
-la reutilización del código y la ejecución de pruebas unitarias.
+Inicialmente, las pruebas fallaron porque la función `cambiarEstado()` todavía no estaba implementada y lanzaba el error correspondiente a la Misión 6.
+
+### GREEN
+
+Se implementó la función utilizando `map()` y el operador de propagación (`...`):
+
+```javascript
+export function cambiarEstado(tareas, id) {
+  return tareas.map(tarea =>
+    tarea.id === id
+      ? { ...tarea, completada: !tarea.completada }
+      : tarea
+  );
+}
+```
+
+La implementación permite generar una nueva colección y modificar únicamente el estado de la tarea seleccionada.
+
+### REFACTOR
+
+Se revisó la implementación y se mantuvo su estructura, ya que utiliza una expresión clara, breve y sin mutaciones.
+
+### Decisión de diseño
+
+Se utilizó `map()` porque permite transformar un elemento dentro de una colección y devolver un nuevo arreglo. El operador de propagación permite copiar el objeto antes de modificar su propiedad `completada`.
+
+**Resultado:** Se agregaron cuatro pruebas unitarias, alcanzando un total de 14 pruebas exitosas.
+
+---
+
+## Misión 7. Eliminar una tarea
+
+**Responsable de implementación: HUGO**
+
+### Objetivo
+
+Implementar la función `eliminarTarea(tareas, id)` para eliminar una tarea mediante su identificador sin modificar la colección original.
+
+### RED
+
+Se desarrollaron cuatro pruebas unitarias para verificar:
+
+1. La eliminación de una tarea existente.
+2. El comportamiento cuando el identificador no existe.
+3. La eliminación en una colección vacía.
+4. La conservación del arreglo original.
+
+Las pruebas nuevas fallaron inicialmente porque la función todavía lanzaba el error de implementación pendiente.
+
+### GREEN
+
+Se implementó la función mediante el método `filter()`:
+
+```javascript
+export function eliminarTarea(tareas, id) {
+  return tareas.filter(tarea => tarea.id !== id);
+}
+```
+
+La función devuelve una nueva colección que contiene todas las tareas excepto aquella cuyo identificador coincide con el recibido.
+
+### REFACTOR
+
+Se revisó la implementación y se determinó que no eran necesarias modificaciones adicionales, debido a que el código es sencillo y expresa directamente la operación requerida.
+
+### Decisión de diseño
+
+Se eligió `filter()` en lugar de `splice()` porque permite excluir elementos sin modificar el arreglo original.
+
+**Resultado:** Se incorporaron cuatro pruebas adicionales, alcanzando un total de 18 pruebas exitosas.
+
+---
+
+## Misión 8. Obtener un resumen de tareas
+
+**Responsable de implementación: HUGO**
+
+### Objetivo
+
+Implementar la función `obtenerResumen(tareas)` para calcular el número total de tareas, las pendientes y las terminadas.
+
+### RED
+
+Se implementaron cinco pruebas unitarias para comprobar:
+
+1. El resumen de una colección con tareas pendientes y terminadas.
+2. El resultado de una colección vacía.
+3. Una colección con todas las tareas pendientes.
+4. Una colección con todas las tareas terminadas.
+5. La conservación del arreglo original.
+
+Las pruebas fallaron inicialmente porque la función todavía no estaba implementada.
+
+### GREEN
+
+Se desarrolló una primera implementación utilizando `length` y `filter()` para contar las tareas correspondientes a cada estado.
+
+```javascript
+export function obtenerResumen(tareas) {
+  const total = tareas.length;
+
+  const pendientes = tareas.filter(
+    tarea => !tarea.completada
+  ).length;
+
+  const terminadas = tareas.filter(
+    tarea => tarea.completada
+  ).length;
+
+  return {
+    total,
+    pendientes,
+    terminadas
+  };
+}
+```
+
+### REFACTOR
+
+Se mejoró la función reutilizando `obtenerPendientes()` y `obtenerTerminadas()`, implementadas en la Misión 5.
+
+```javascript
+export function obtenerResumen(tareas) {
+  return {
+    total: tareas.length,
+    pendientes: obtenerPendientes(tareas).length,
+    terminadas: obtenerTerminadas(tareas).length
+  };
+}
+```
+
+Esta modificación reduce la duplicación de lógica y facilita el mantenimiento.
+
+### Decisión de diseño
+
+Se reutilizaron funciones existentes para centralizar las reglas de clasificación de tareas y evitar repetir operaciones de filtrado.
+
+**Resultado:** Se agregaron cinco pruebas unitarias, alcanzando un total de 23 pruebas exitosas.
+
+---
+
+## Misión 9. Integración de la interfaz con taskService.js
+
+**Responsable de implementación: HUGO**
+
+### Objetivo
+
+Integrar las funciones de dominio desarrolladas en `taskService.js` con la interfaz de usuario implementada en `app.js`.
+
+### Estado inicial
+
+Antes de la refactorización, la interfaz utilizaba directamente `push()` para agregar tareas y `splice()` para eliminarlas.
+
+Además, no permitía marcar tareas como terminadas, los filtros estaban pendientes de implementación y el resumen mostraba únicamente el total de tareas.
+
+### Implementación
+
+Se modificó `app.js` para importar las siguientes funciones:
+
+```javascript
+import {
+  crearTarea,
+  agregarTarea,
+  obtenerPendientes,
+  obtenerTerminadas,
+  cambiarEstado,
+  eliminarTarea,
+  obtenerResumen
+} from "./taskService.js";
+```
+
+Se realizaron los siguientes cambios:
+
+1. Se sustituyó `push()` por `crearTarea()` y `agregarTarea()`.
+2. Se reemplazó `splice()` por `eliminarTarea()`.
+3. Se incorporaron botones para cambiar el estado mediante `cambiarEstado()`.
+4. Se integraron los filtros de tareas pendientes y terminadas.
+5. Se agregó un resumen con el total de tareas y sus estados.
+6. Se utilizaron identificadores únicos para realizar las operaciones, en lugar de depender de los índices del arreglo.
+7. Se utilizó `textContent` para mostrar los títulos sin interpretarlos como HTML.
+
+### REFACTOR
+
+Se separaron las responsabilidades entre los archivos principales:
+
+- `taskService.js`: operaciones sobre los datos y reglas de negocio.
+- `app.js`: eventos del usuario, actualización de la interfaz y representación de resultados.
+
+### Decisión de diseño
+
+Se decidió delegar la lógica de negocio al servicio para evitar duplicaciones y mantener la interfaz independiente de las operaciones internas sobre las tareas.
 
 ### Verificación
 
-Comandos utilizados:
+Se definieron pruebas manuales para comprobar la creación de tareas, el cambio de estado, la eliminación, el funcionamiento de los filtros y la actualización del resumen.
+
+Las pruebas unitarias del servicio se mantuvieron en 23 casos.
+
+---
+
+## Misión 10. Refactorización final
+
+**Responsable de implementación: HUGO**
+
+### Objetivo
+
+Revisar y mejorar la organización interna de la aplicación, conservando las funcionalidades desarrolladas anteriormente.
+
+### Revisión realizada
+
+- Se revisó la separación entre la lógica de dominio y la interfaz.
+- Se comprobó el uso de operaciones inmutables sobre las tareas.
+- Se verificó la reutilización de funciones existentes.
+- Se revisó la legibilidad y organización del código.
+- Se contempló la exclusión de archivos generados automáticamente mediante `.gitignore`.
+- Se ejecutaron pruebas unitarias para verificar el comportamiento.
+
+### Decisiones de diseño
+
+Se mantuvo la lógica de negocio dentro de `taskService.js`, mientras que `app.js` quedó encargado de los eventos y la actualización del DOM.
+
+Esta separación facilita el mantenimiento, la reutilización del código y la ejecución de pruebas unitarias.
+
+### Verificación
+
+Se utilizaron los siguientes comandos:
 
 ```bash
 npm test
@@ -142,5 +357,81 @@ node --check src/taskService.js
 node --check src/app.js
 ```
 
-El refactor se considera correcto cuando todas las pruebas
-continúan pasando y la interfaz conserva sus funcionalidades.
+El refactor se considera correcto cuando todas las pruebas continúan pasando y la interfaz conserva sus funcionalidades.
+
+---
+
+## Misión 11. Mejora opcional: búsqueda de tareas por título
+
+**Responsable de implementación: HUGO**
+
+### Objetivo
+
+Implementar una función adicional que permita buscar tareas utilizando una palabra o fragmento de su título, aplicando el ciclo RED → GREEN → REFACTOR.
+
+### RED
+
+Se diseñaron pruebas unitarias para verificar:
+
+1. La búsqueda de tareas que contienen el texto indicado.
+2. La búsqueda sin distinguir mayúsculas y minúsculas.
+3. El comportamiento cuando no existen coincidencias.
+4. La conservación del arreglo original.
+5. La búsqueda con espacios adicionales al inicio y al final.
+
+Durante el desarrollo se identificaron y corrigieron errores relacionados con la ubicación de una prueba unitaria y la importación de la función `buscarPorTitulo()`.
+
+### GREEN
+
+Se implementó la función utilizando `filter()`, `includes()` y `toLowerCase()` para encontrar las coincidencias sin modificar las tareas originales.
+
+### REFACTOR
+
+Se incorporó `trim()` para eliminar espacios innecesarios del criterio de búsqueda.
+
+La implementación final quedó de la siguiente manera:
+
+```javascript
+export function buscarPorTitulo(tareas, texto) {
+  const busqueda = texto.trim().toLowerCase();
+
+  return tareas.filter(tarea =>
+    tarea.titulo.toLowerCase().includes(busqueda)
+  );
+}
+```
+
+### Decisión de diseño
+
+Se utilizó `filter()` porque permite devolver todas las coincidencias en un nuevo arreglo, mientras que `toLowerCase()` y `trim()` facilitan la búsqueda.
+
+Esta mejora se implementó en la capa de dominio y se verificó mediante pruebas unitarias.
+
+### Resultado final
+
+Se ejecutó `npm test` con Vitest 2.1.9 y se obtuvo:
+
+```text
+Test Files  1 passed (1)
+Tests       28 passed (28)
+```
+
+Las cinco pruebas de `buscarPorTitulo()` pasaron correctamente, al igual que las 23 pruebas anteriores.
+
+---
+
+## Resultado general del laboratorio
+
+Durante el laboratorio se trabajaron las misiones 0 a 11, aplicando refactorización incremental, pruebas unitarias y control de versiones con Git.
+
+Se desarrollaron funciones para crear, agregar, buscar, filtrar, modificar y eliminar tareas, además de calcular un resumen y realizar búsquedas por título.
+
+La verificación final de la lógica de dominio se realizó mediante Vitest, obteniendo **28 pruebas unitarias exitosas y ninguna fallida**.
+
+## Aprendizajes
+
+El desarrollo de esta práctica permitió comprender la importancia de separar la lógica de negocio de la interfaz de usuario, utilizar operaciones inmutables y escribir pruebas que permitan detectar errores durante los cambios.
+
+El ciclo RED → GREEN → REFACTOR ayudó a trabajar de forma incremental, comprobando el comportamiento de cada función antes de continuar con la siguiente.
+
+También se reforzó el uso de Git para registrar el avance por misiones y facilitar el trabajo colaborativo.
