@@ -244,3 +244,78 @@ describe("eliminarTarea", () => {
     expect(resultado).not.toBe(tareas);
   });
 });
+
+// MISIÓN 8: obtenerResumen()
+
+describe("obtenerResumen", () => {
+
+  it("calcula correctamente el resumen de una colección mixta", () => {
+    const tareas = [
+      { id: 1, titulo: "Estudiar", completada: false },
+      { id: 2, titulo: "Programar", completada: true },
+      { id: 3, titulo: "Hacer reporte", completada: false },
+      { id: 4, titulo: "Revisar código", completada: true }
+    ];
+
+    const resultado = obtenerResumen(tareas);
+
+    expect(resultado).toEqual({
+      total: 4,
+      pendientes: 2,
+      terminadas: 2
+    });
+  });
+
+  it("devuelve todos los valores en cero cuando la colección está vacía", () => {
+    const resultado = obtenerResumen([]);
+
+    expect(resultado).toEqual({
+      total: 0,
+      pendientes: 0,
+      terminadas: 0
+    });
+  });
+
+  it("identifica cuando todas las tareas están pendientes", () => {
+    const tareas = [
+      { id: 1, titulo: "Tarea 1", completada: false },
+      { id: 2, titulo: "Tarea 2", completada: false }
+    ];
+
+    const resultado = obtenerResumen(tareas);
+
+    expect(resultado).toEqual({
+      total: 2,
+      pendientes: 2,
+      terminadas: 0
+    });
+  });
+
+  it("identifica cuando todas las tareas están terminadas", () => {
+    const tareas = [
+      { id: 1, titulo: "Tarea 1", completada: true },
+      { id: 2, titulo: "Tarea 2", completada: true }
+    ];
+
+    const resultado = obtenerResumen(tareas);
+
+    expect(resultado).toEqual({
+      total: 2,
+      pendientes: 0,
+      terminadas: 2
+    });
+  });
+
+  it("no modifica el arreglo original", () => {
+    const tareas = [
+      { id: 1, titulo: "Estudiar", completada: false }
+    ];
+
+    const copia = structuredClone(tareas);
+
+    obtenerResumen(tareas);
+
+    expect(tareas).toEqual(copia);
+  });
+
+});
