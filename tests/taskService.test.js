@@ -31,6 +31,20 @@ describe("crearTarea", () => {
   });
 });
 
+describe("agregarTarea", () => {
+  it("incluye la tarea nueva en la colección resultante", () => {
+    // Arrange
+    const tareas = [crearTarea(1, "Revisar requisitos")];
+    const nueva = crearTarea(2, "Diseñar pruebas");
+
+    // Act
+    const resultado = agregarTarea(tareas, nueva);
+
+    // Assert
+    expect(resultado).toContainEqual(nueva);
+  });
+});
+
 // MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
