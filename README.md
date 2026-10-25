@@ -69,3 +69,7 @@ uno nuevo se agregue.
 3. Modificamos la function render() de app.js para que pueda cargar el titulo de la tarea de manera apropiada.
 4. En el addEventListener("submit",...), modificamos tareas.push(...) con el fin de que agregue de manera apropiada un nuevo objeto en tareas, en vez
 de un string. 
+
+## Mision 2 . Cambiar el modelo: de string a objeto
+**DRIVER: RIGO**
+**NAVIGATOR: HUGO**
