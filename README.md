@@ -25,6 +25,8 @@ La primera prueba está preparada para fallar: es el punto de partida de la **Mi
 - `tests/taskService.test.js`: suite incremental de pruebas unitarias con Vitest.
 
 ## Misión 0 · Antes de modificar código
+**DRIVER: RIGO**
+**NAVIGATOR: HUGO**
 
 Responde aquí:
 
@@ -54,3 +56,16 @@ Documenta al menos una iteración:
 ## Pair Programming
 
 Registra por misión quién fue **Driver** y quién **Navigator**. Intercambien roles con frecuencia y no hagan commit hasta que ambos puedan explicar el código y la prueba.
+
+
+## Mision 1 . Cambiar el modelo: de string a objeto
+**DRIVER: RIGO**
+**NAVIGATOR: HUGO**
+
+1. En el javascript "app.js", cambiamos las variables que guarda el arreglo "tareas" de string a objeto, y se agrego las propiedades id y completada, para
+poder identificar cada objeto y verificar si una tarea fue completada o no.
+2. Agregamos una nueva variable "sigId", con el valor pre-establecido a 4, con el fin de que la siguiente tarea tenga una id diferente, y asi cada vez que
+uno nuevo se agregue.
+3. Modificamos la function render() de app.js para que pueda cargar el titulo de la tarea de manera apropiada.
+4. En el addEventListener("submit",...), modificamos tareas.push(...) con el fin de que agregue de manera apropiada un nuevo objeto en tareas, en vez
+de un string. 
